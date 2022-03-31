@@ -32,3 +32,8 @@ Any subfolder will have access to poetry
 
 * Inner Folder: 
 > Containing init, let this contain the python code related to the project. 
+
+
+# Select Python Interpreter 
+- Add path from `.venv > scripts` locate `python.exe` and use this path for your interpreter.  
+> May resolve issues with added packages 
