@@ -3,6 +3,7 @@
 
 # Add Package to project 
 - call: `poetry add packagename`
+- Note: `poetry add packagename` = `pip install packagename` in poetry's virtual environment
 
 - packages remain specific to prject and are found in project folders 
 > See `pyproject.toml` to find it explicitly with its version required.
@@ -37,3 +38,4 @@ Any subfolder will have access to poetry
 # Select Python Interpreter 
 - Add path from `.venv > scripts` locate `python.exe` and use this path for your interpreter.  
 > May resolve issues with added packages 
+
