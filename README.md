@@ -5,6 +5,7 @@
 > Math, Numpy, Pandas, Gspread
 ## 2: 
 ## 3: 
-## 4: Practice Packages file 
+## 4: Additional Tutorial files  
 - Pandas 
 - Gspread
+- Jupyter Notbooks 
