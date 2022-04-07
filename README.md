@@ -9,3 +9,11 @@
 - Pandas 
 - Gspread
 - Jupyter Notbooks 
+
+# Issue after `poetry install` from github
+- After install terminal shows auto run cell for enviorment 
+- Fix: 
+> in VSCode settings<br>
+File: `.vscode> settings.json`<br>
+add:  
+    "python.terminal.activateEnvironment": false,
