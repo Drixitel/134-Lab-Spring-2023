@@ -5,7 +5,7 @@ description = ""
 authors = ["Drixitel <mpmunoz1993@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = ">=3.9,<3.11"
 python-math = "^0.0.1"
 numpy = "^1.22.3"
 pandas = "^1.4.1"
@@ -16,6 +16,8 @@ matplotlib = "^3.5.1"
 jupyterlab = "^3.3.2"
 notebook = "^6.4.10"
 openpyxl = "^3.0.9"
+statistics = "^1.0.3"
+scipy = "^1.8.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
