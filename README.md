@@ -17,3 +17,6 @@
 File: `.vscode> settings.json`<br>
 add:  
     "python.terminal.activateEnvironment": false,
+
+# Save txt file: 
+> `np.savetxt("sample.txt", new_array, delimiter =", ")`
