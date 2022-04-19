@@ -18,17 +18,26 @@ Constants = [b, g, p, n_o,rho1 ,rho2]
 d   = 7.752E-3      # meters
 
 
+
+# Plate Separation 
+sigd = 0.0127E-3    # meters
+sigx = 0.01E-3      # meters
+sigt = 0.1          # fractional seconds
+
+
+
+
 # Functions: 
 
 
 
 def radius(v_y0):     
-    # Function: Takes velocity returns radius
+    # Function: Takes (positive) velocity returns radius
     # Components of a 
     # terminal velocity with E = 0 
     
     # convert mm to m 
-    v_y0 = v_y0*10**(-3)
+    v_y0 = v_y0
     
     # alpha 
     alpha = b/(2*p)
@@ -50,12 +59,12 @@ def q1(a,v_y0,v_yE,V):
     #velocity: v_yE E != 0
 
     # convert mm to m 
-    v_y0 = (v_y0)*10**(-3)
-    v_yE = -(v_yE)*10**(-3) 
+    v_y0 = (v_y0)
+    v_yE = -(v_yE) 
 
 
     #left term (lt) 
-    lt = (4/3)*np.pi*rho1*g*(d/V)*a**3
+    lt = (4/3)*np.pi*rho1*g*(d/V)*(a**3)
 
     #right term (rt)
     rt = (v_yE - v_y0)/ v_y0
@@ -63,6 +72,15 @@ def q1(a,v_y0,v_yE,V):
     q1 = lt*rt
     
     return q1
+
+
+# effective viscosity 
+
+def neff(a): 
+    n_effa = n_o/(1 + (b/(p*a)))
+
+    return n_effa
+
 
 
 
@@ -75,11 +93,11 @@ def Droplet_Values(n_drop, n_ionized, csv_name_as_string):
     # Call the CSV file
     droplet = pd.read_csv(csv_name_as_string)
 
-    # Select the specified droplet by droplet # and Ionization
+    # Select the specified droplet by droplet # and Ionization (rows)
     d1 = droplet[droplet['Droplet'].isin([n_drop]) & droplet['Ionized'].isin([n_ionized])]
 
-    # Select the specified parameters (Velocities and Volts)
-    d1 = d1[["Vf1","Vr1","Vf2","Vr2","Vf3","Vr3","Volts V"]]
+    # Select the specified parameters (Velocities and Volts) (columns)
+    d1 = d1[["Vf1","Vr1","Vf2","Vr2","Vf3","Vr3","vf av","vr av","Volts V","varVf1", "varVr1","varVf2","varVr2","varVf3","varVr3"]]
 
     # Convert to array, already is a float
     d1 = d1.to_numpy()
@@ -159,7 +177,7 @@ def CreateDropsDatabase(csv_file_name_as_string): # "filename.csv"
 
 
 
-def Radii_Charge(drops): 
+def Radii_Charge_NotAveragedVel(drops_list_of_lists): 
     # droplet = to loop through
     # drops a list of lists previously created
 
@@ -169,29 +187,54 @@ def Radii_Charge(drops):
     list_of_charge_values =[]
 
 
-    for droplet in drops: 
-        n = 0
-        # print('new droplet')
+    for droplet in drops_list_of_lists: 
+        # n = index value of 1droplets parameters
+        # n = 0  
+        # print(droplet)
         for i in range(3): 
-            if n > 4: 
-                break
-            else: 
-                if droplet[n] ==0 or droplet[n+1] ==0: 
-                    list_of_radius_values.append(0)
-                    list_of_charge_values.append(0)
-                    # print("no value vf.vr")
-                    continue
-                else:
-                    # print(n)
-                    # print('new drop vf.vr')
-                    # print(droplet[n])
-                    # print(droplet[n+1])
+            idx = i * 2
 
-                    ri = radius(droplet[n])
-                    list_of_radius_values.append(ri)
+            # if n > 4: 
+            #     break
+            # else: 
+            if droplet[idx] ==0 or droplet[idx+1] ==0: 
+                list_of_radius_values.append(0)
+                list_of_charge_values.append(0)
+                print("no value vf.vr")
+                continue
+            else:
+                # print(n)
+                # print('new drop vf.vr')
+                # print(droplet[n])
+                # print(droplet[n+1])
 
-                    #calculate charge 
-                    qi = q1(ri,droplet[n],droplet[n+1],droplet[6])
-                    list_of_charge_values.append(qi)
-                    n += 2
+                ri = radius(droplet[idx])
+                list_of_radius_values.append(ri)
+
+                #calculate charge 
+                qi = q1(ri,droplet[idx],droplet[idx+1],droplet[8])
+                list_of_charge_values.append(qi)
+                # n += 2
     return list_of_radius_values, list_of_charge_values
+
+
+def Radii_Charge_VelAVERAGED(drops_list_of_lists):
+    #   Pulls the velocity that is already averaged 
+    #   Returns two lists 
+    list_of_radius_values_velAV = []
+    list_of_charge_values_velAV =[]
+
+    for droplet in drops_list_of_lists: 
+    #Droplet should have 8 indecies we want index 6 & 7
+    #index 6 = vel E=0
+    #index 7 = vel E!=0
+
+        #Cal Radius and save
+        ri_velav = radius(droplet[6])
+        list_of_radius_values_velAV.append(ri_velav)
+
+        #Cal Charge and save 
+        qi_velav = q1(ri_velav, droplet[6], droplet[7], droplet[8])
+        list_of_charge_values_velAV.append(qi_velav)
+    return list_of_radius_values_velAV, list_of_charge_values_velAV
+            
