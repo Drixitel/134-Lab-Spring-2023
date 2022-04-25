@@ -23,5 +23,12 @@ File: `.vscode> settings.json`<br>
 add:  
     "python.terminal.activateEnvironment": false,
 
+# Issue: false positive pylance error
+> e.g.: `from file import function` not working or pulling
+- Fix: 
+> - checking for file (searches init)<br>
+> e.g: use ` from Millikan.MillikanCode.file import function`
+* our issue was naming a file with a hyphen Millikan-Code `Don't do that`
+
 # Save txt file: 
 > `np.savetxt("sample.txt", new_array, delimiter =", ")`
