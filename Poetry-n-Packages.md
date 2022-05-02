@@ -22,6 +22,8 @@ this creates an identical enviorment on new machine
 # Cache -ignore 
 # Enviorment
 * seen but not necessary to mess with in `.venv`
+- Genertates with `poetry install`
+
 
 
 # Working inside a Poetry Folder (optional)
@@ -39,3 +41,14 @@ Any subfolder will have access to poetry
 - Add path from `.venv > scripts` locate `python.exe` and use this path for your interpreter.  
 > May resolve issues with added packages 
 
+# Poetry update Python
+- Change .toml file 
+- Save
+- run `poetry lock --no-update`
+- Delete .env
+- `poetry install`
+
+# Check your python version in Poetry
+- `poetry shell`
+- `python --version`
+- `exit`
