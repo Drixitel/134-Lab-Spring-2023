@@ -20,13 +20,24 @@ this creates an identical enviorment on new machine
 - make sure you're calling functions correctly 
 
 # Cache -ignore 
-# Enviorment
+# Enviorment (`.venv`)
 * seen but not necessary to mess with in `.venv`
-- Genertates with `poetry install`
+>> Contains interpreters (python)
+- Genertates with command `poetry install`
+
+## Genertate Environment in-project 
+>>  If `.venv` generated not in-project, find it (`poetry env info`) delete it and continue with these steps. 
+- use command 
+> `poetry config virtualenvs.create false --local`
+- View config 
+> `poetry config --list`
+- Check for True: 
+>> `virtualenvs.in-project = True`
 
 
 
 # Working inside a Poetry Folder (optional)
+> Always work within the file that contains your `.toml` file or any sub directory within it
 
 * Poetry creates a subfolder which contains a `init.py` file titled the same as the original project. 
 * Outer folder:
@@ -38,17 +49,19 @@ Any subfolder will have access to poetry
 
 
 # Select Python Interpreter 
-- Add path from `.venv > scripts` locate `python.exe` and use this path for your interpreter.  
+- Add path from `.venv > scripts` or `.venv> bin` locate `python.exe` or `python(version).exe` and use this path for your interpreter.  
+- interpreters, or Kernels (same thing) must be from your `.venv` file to function properly
 > May resolve issues with added packages 
 
-# Poetry update Python
-- Change .toml file 
+# Poetry update Python (Newer Version)
+- Change `.toml` file 
 - Save
 - run `poetry lock --no-update`
-- Delete .env
-- `poetry install`
+- Delete `.venv` file 
+- `poetry install` (this reinstalls the `.venv`)
 
 # Check your python version in Poetry
+> Commands: 
 - `poetry shell`
 - `python --version`
 - `exit`
