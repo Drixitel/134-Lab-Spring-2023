@@ -12,7 +12,11 @@
 call: `poetry install`<br>
 this creates an identical enviorment on new machine
 
-
+Issue Adding a Package to Project 
+- If adding fails and reverts back to original an older package might be interfering 
+- Delete the `.venv` enviorment file 
+- `poetry add` the package 
+> this will add the new package then add the remaining ones similar to `poetry install`
 
 # Run program from Terminal 
 - call: `poetry run python Filename.py` 

@@ -1,7 +1,3 @@
-CCDOps Exported Profile Report
-Image: 
-Average of Rows 236 through 262
-Column	Value (ADU)
 1	1289
 2	1285
 3	1281

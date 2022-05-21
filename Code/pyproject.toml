@@ -18,6 +18,7 @@ notebook = "^6.4.10"
 openpyxl = "^3.0.9"
 statistics = "^1.0.3"
 scipy = "^1.8.0"
+astropy = "^5.0.4"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
