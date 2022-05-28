@@ -31,6 +31,9 @@ def CreateData(txtfilename):
     intensities = []
     #read file
     f = open(txtfilename, 'r')
+    # file_content = f.read()
+
+
     #loop and campartmentaize 
     for row in f: 
         row = row.split()

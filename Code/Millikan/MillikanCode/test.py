@@ -1,2 +1,0 @@
-def black(): 
-    print("hello")

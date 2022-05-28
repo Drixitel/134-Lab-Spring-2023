@@ -1,3 +1,7 @@
+CCDOps Exported Profile Report
+Image: C:\Users\George Brown\Desktop\AMJ-zeeman\WithB\180\5_B0600.FIT
+Average of Rows 238 through 264
+Column	Value (ADU)
 1	1781
 2	1639
 3	1527
