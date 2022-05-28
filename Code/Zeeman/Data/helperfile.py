@@ -110,7 +110,7 @@ def LabelPeaks_ShrinkData( xvalues, yvalues, lowerxlim, upperxlim, lowerylim):
     ''' Takes: Original bulk data (x,y) and limits to truncate the data
         Returns: The desired peaks and the truncated data (xnew,ynew)'''
     #Find bin x-values to associated local y-Max values
-    peaks, _ = find_peaks(yvalues, distance=25)
+    peaks, _ = find_peaks(yvalues, distance=5)
 
     #Label the associated y-Max values
     all_ymax = yvalues[peaks]
