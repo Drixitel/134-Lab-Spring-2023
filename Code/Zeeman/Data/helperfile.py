@@ -2,7 +2,6 @@
 import numpy as np
 import matplotlib.pyplot as plt 
 import matplotlib.colors as colors
-import pandas as pd 
 
 from astropy.visualization import astropy_mpl_style
 from astropy.utils.data import get_pkg_data_filename
@@ -10,9 +9,8 @@ from astropy.io import fits
 
 from scipy.optimize import curve_fit
 import scipy.stats as stat
-from scipy.signal import argrelextrema
 from scipy.signal import find_peaks
-from scipy.misc import electrocardiogram
+from scipy.signal import peak_widths
 
 
 # Collect Data
@@ -72,6 +70,10 @@ def PlotRings(image_data, title, xlabel, ylabel, invert = True, figsize0 = 'a', 
 
 def Plots(x, y, title, xlabel, ylabel, xrange = [ -1 , -1 ] , yrange = [ -1 , -1 ], figsize0 = 'a', figsize1 = 'a'):
     '''Plots anything but plots Intensities really well'''
+    
+    plt.style.use(astropy_mpl_style)
+    hfont = {'fontname':'Consolas'}
+
     #style plot
     if figsize0 != 'a' and figsize1 != 'a': 
         print(f'Ratio set : ({figsize0}, {figsize1})')
@@ -89,17 +91,26 @@ def Plots(x, y, title, xlabel, ylabel, xrange = [ -1 , -1 ] , yrange = [ -1 , -1
             xrange = [ min(x) - xspan/10. , max(x) + xspan/10. ]
             plt.xlim( xrange )
 
-    plt.style.use(astropy_mpl_style)
-    hfont = {'fontname':'Consolas'}
-
     #plot
     axes.plot(x, y, label= 'File Data', color='blue')
 
-    #labels 
+    #labels
     axes.set_title(title, **hfont)
     axes.set_ylabel(ylabel, **hfont)
     axes.set_xlabel(xlabel, **hfont)
     return 
+
+def MakeManyPlots(XYdictionary):
+    '''Takes a dictionary of (x,y) arrays 
+        Returns generic plots for each'''
+    for i in range(0,len(XYdictionary),2): 
+        Plots(
+            XYdictionary[i],
+            XYdictionary[i+1], 
+            title =f'inital run: ({i},{i+1})',
+            xlabel= 'Bins', 
+            ylabel='Intensities [ADU]')
+    return
 
 def SaveFigure(filename):
     '''If you forget the keyword'''
@@ -112,6 +123,8 @@ def LabelPeaks_ShrinkData( xvalues, yvalues, lowerxlim, upperxlim, lowerylim):
     #Find bin x-values to associated local y-Max values
     peaks, _ = find_peaks(yvalues, distance=5)
 
+    # width_full = peak_widths(xvalues, peaks, rel_height=1)
+    # width_half = peak_widths(xvalues, peaks, rel_height=0.5)
     #Label the associated y-Max values
     all_ymax = yvalues[peaks]
 
@@ -136,6 +149,7 @@ def PlotNewPeaks(newpeaks, OG_intensities ):
     '''Just a specific way to plot the Peaks with a red (x)'''
     plt.plot(newpeaks, OG_intensities[newpeaks], 'x', color ='red', label = 'Peaks')
     return
+
 
 # Gaussian Fitting 
 def gaussian( x , *p ) :
@@ -187,11 +201,12 @@ def PeakBinValuesbyfit(fitfunction, newx, newy, NewPeaks, OG_intensity, AmpAdjus
     return popt, peakbinvalues
 
 
-# Radius from 2 pixel values 
-def RadiusMicoMeter(bin1,bin2):
-    ''' Takes: final desired Bin-Peak locations
-        Returns: radius values from the inner peak to the outer peak
-                 in micro-meters'''
+# ---------------Functions for Analysis -------------------------------------
+
+def RadiusMeter(bin1,bin2):
+    ''' Takes: final desired Bin-Peak locations (bin1, bin2)
+        Returns: radius VALUE from the inner peak to the outer peak
+                 in meters'''
     b1 = np.array(bin1)
     b2 = np.array(bin2)
    
@@ -201,9 +216,56 @@ def RadiusMicoMeter(bin1,bin2):
     #reverse the order: inner ring is now first 
     # radius = radius[::-1]
     #convert to micrometer (per pixel) is (9um x 9um)
-    radius_micometer = radius*9
+    radius_micometer = radius*9 #um
+    radius_meter = radius_micometer*(10**(-6))
 
-    return radius_micometer
+    return radius_meter
+
+def ThetaRad(radius):
+    '''Take radius and returns 1 Theta 
+        focal length = 135E-3 m
+        theta = r/f'''
+    f =135E-3 #Focal length in meters 135mm
+    theta = np.arctan(radius/f)
+    return theta
+
+def ThetasRadArray(radii):
+    '''Takes Array/list of radii Returns arr of thetas
+        focal length = 135E-3 m
+        theta = r/f'''
+    rad = np.array(radii)
+    thetas = ThetaRad(rad)
+    return thetas
+
+
+def DeltaE(ThetaA, ThetaB):
+    '''Takes 2 theta values and returns 1 Delta E
+        Ebar = 3.638E-12 erg'''
+    DeltaThetaPrime = ThetaA**2 - ThetaB**2
+    Ebar = 3.638E-12 #erg
+    constant = 2/Ebar
+    
+    deltaE = DeltaThetaPrime/constant
+
+    return deltaE
+
+def DeltaEPrime90(thetasarray): 
+    '''Takes an array from the 90 deg peaks 
+        3 thetas per set gives 2 Delta E's 
+        Returns an arry of delta E's
+        Ebar = 3.638E-12 erg '''
+    if len(thetasarray) % 3 ==0:
+        deltaEs = []
+        for i in range( 0,len(thetasarray), 3):
+            E1 = DeltaE(thetasarray[i],thetasarray[i+1])
+            deltaEs.append(E1)
+            E2 = DeltaE(thetasarray[i+1],thetasarray[i+2])
+            deltaEs.append(E2)
+        deltaE = np.array(deltaEs)
+    else: 
+        print('This array does not have the correct dimension')
+    
+    return deltaE
 
 def RadiusValuesInner_to_Outer(peakbinsvalues):
     ''' Takes: final desired Bin-Peak locations
@@ -234,8 +296,8 @@ def RadiusValuesInner_to_Outer(peakbinsvalues):
     return radius_micometer 
 
 # Chi^2 Values 
-
 def Chi2Values(fitfunction, xdata, ydata, fitparams, ysigma):
+
     yfit = fitfunction(xdata, *fitparams)
 
     chisq = sum( (ydata - yfit)**2 / ysigma**2 )
