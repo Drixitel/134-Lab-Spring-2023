@@ -12,4 +12,4 @@
 - `heperfile.py`: Contains all the functions used to process the data 
 
 # Several `.txt` files: 
-> These are all created/used across several notebooks so converting them to a pullable file was essential. 
+> These are all created/used across several notebooks so converting them to a pullable file was essential
