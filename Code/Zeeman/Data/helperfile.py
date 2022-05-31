@@ -286,7 +286,7 @@ def DeltaEPrime180(thetasarray):
     return deltaE
 
 
-def RadiusValuesInner_to_Outer(peakbinsvalues):
+def RadiiMeterInner_to_Outer(peakbinsvalues):
     ''' Takes: final desired Bin-Peak locations
         Returns: radius values from the inner peak to the outer peak
                  in micro-meters'''
@@ -311,8 +311,8 @@ def RadiusValuesInner_to_Outer(peakbinsvalues):
     #reverse the order: inner ring is now first 
     radius = radius[::-1]
     #convert to micrometer (per pixel) is (9um x 9um)
-    radius_micometer = radius*9
-    return radius_micometer 
+    radius_meter = radius*9*10**(-6)
+    return radius_meter
 
 # Chi^2 Values 
 def Chi2Values(fitfunction, xdata, ydata, fitparams, ysigma):

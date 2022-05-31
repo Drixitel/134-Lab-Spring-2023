@@ -72,3 +72,11 @@ Add in quadrature the error in the Magnetic Field
 $$
 \text{True Error} = \sigma_{\Delta \text{Yvalues}} = \sqrt{\frac{\sigma_{\Delta E'}^2+ \sigma_B^2}{2}}
 $$
+
+# Error prop for $\theta^2$ 
+$$
+\sigma_{\theta^2}^2 = (2\theta)^2(\sigma_{theta})^2
+$$
+$$
+\sigma_{\theta^2} = (2\theta)(\sigma_{theta})
+$$
