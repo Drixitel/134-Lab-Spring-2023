@@ -267,6 +267,25 @@ def DeltaEPrime90(thetasarray):
     
     return deltaE
 
+def DeltaEPrime180(thetasarray): 
+    '''Takes an array from the 180 deg peaks 
+        3 thetas per set gives 2 Delta E's 
+        Returns an arry of delta E's
+        Ebar = 3.638E-12 erg '''
+    if len(thetasarray) % 2 ==0:
+        deltaEs = []
+        for i in range( 0,len(thetasarray), 2):
+            E1 = DeltaE(thetasarray[i],thetasarray[i+1])
+            deltaEs.append(E1)
+            # E2 = DeltaE(thetasarray[i+1],thetasarray[i+2])
+            # deltaEs.append(E2)
+        deltaE = np.array(deltaEs)
+    else: 
+        print('This array does not have the correct dimension')
+    
+    return deltaE
+
+
 def RadiusValuesInner_to_Outer(peakbinsvalues):
     ''' Takes: final desired Bin-Peak locations
         Returns: radius values from the inner peak to the outer peak
