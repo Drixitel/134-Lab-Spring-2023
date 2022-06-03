@@ -12,7 +12,6 @@ import scipy.stats as stat
 from scipy.signal import find_peaks
 from scipy.signal import peak_widths
 
-
 # Collect Data
 def GetImage(fitfile): 
     '''Takes: .fit file
