@@ -298,7 +298,7 @@ def RadiiMeterInner_to_Outer(peakbinsvalues):
         # take their difference 
         diameters = abs(pair[0] - pair[1])
         # Round
-        d = np.round(diameters, decimals=3)
+        d = np.round(diameters, decimals=6)
         diameter.append(d)
         # iterate 
         start += 1
@@ -332,6 +332,6 @@ def Chi2Values(fitfunction, xdata, ydata, fitparams, ysigma):
     print('Degrees of freedom: ',ndf)
     print('Reduced chi-square: ',chisq_reduced)
     print('CDF: ', cdf)
-    print('p-test value: ',pvalue)
+    print('p-test value (1 Tail bc not symmetric): ',pvalue)
 
     return
