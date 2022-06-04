@@ -248,27 +248,11 @@ def DeltaE(ThetaA, ThetaB):
 
     return deltaE
 
-def DeltaEPrime90(thetasarray): 
-    '''Takes an array from the 90 deg peaks 
-        3 thetas per set gives 2 Delta E's 
-        Returns an arry of delta E's
-        Ebar = 3.638E-12 erg '''
-    if len(thetasarray) % 3 ==0:
-        deltaEs = []
-        for i in range( 0,len(thetasarray), 3):
-            E1 = DeltaE(thetasarray[i],thetasarray[i+1])
-            deltaEs.append(E1)
-            E2 = DeltaE(thetasarray[i+1],thetasarray[i+2])
-            deltaEs.append(E2)
-        deltaE = np.array(deltaEs)
-    else: 
-        print('This array does not have the correct dimension')
-    
-    return deltaE
 
-def DeltaEPrime180(thetasarray): 
-    '''Takes an array from the 180 deg peaks 
-        3 thetas per set gives 2 Delta E's 
+
+def DeltaEPrime(thetasarray): 
+    '''Takes an array from the peaks 
+        2 thetas per set gives 1 Delta E's 
         Returns an arry of delta E's
         Ebar = 3.638E-12 erg '''
     if len(thetasarray) % 2 ==0:
@@ -276,8 +260,7 @@ def DeltaEPrime180(thetasarray):
         for i in range( 0,len(thetasarray), 2):
             E1 = DeltaE(thetasarray[i],thetasarray[i+1])
             deltaEs.append(E1)
-            # E2 = DeltaE(thetasarray[i+1],thetasarray[i+2])
-            # deltaEs.append(E2)
+
         deltaE = np.array(deltaEs)
     else: 
         print('This array does not have the correct dimension')
