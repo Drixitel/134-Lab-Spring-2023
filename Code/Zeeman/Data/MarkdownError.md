@@ -67,16 +67,34 @@ $$
 \sigma_{\Delta E'}^2= (\bar{E} \cdot \theta_a)^2 (\sigma_{\theta_a})^2 +(\bar{E} \cdot\theta_b)^2 (\sigma_{\theta_b})^2
 $$
 
-## 5. 
-Add in quadrature the error in the Magnetic Field
-$$
-\text{True Error} = \sigma_{\Delta \text{Yvalues}} = \sqrt{\frac{\sigma_{\Delta E'}^2+ \sigma_B^2}{2}}
-$$
+
 
 # Error prop for $\theta^2$ 
 $$
 \sigma_{\theta^2}^2 = (2\theta)^2(\sigma_{theta})^2
 $$
-$$
+> $$
 \sigma_{\theta^2} = (2\theta)(\sigma_{theta})
 $$
+
+# Equation for $\mu$ 
+
+$$
+\Delta E_i' = A \mu_i B_i
+$$
+>$$
+\mu_i = \frac{\Delta E'}{A \cdot B_i}
+$$
+
+>$$
+\sigma_{\mu}^2 = (\frac{1}{A\cdot B_i})^2(\sigma_{\Delta E_i'})^2+ (\frac{\Delta E_i'}{A\cdot B_i^2})^2(\sigma_{B_i})^2
+$$
+
+# Error Prop for $\mu_0$ with ($\Delta E$, $B$)
+
+> using weighted mean
+>> $$ \bar{\mu} = \Sigma_i^n(\frac{\mu_i}{\sigma_{\mu_i}^2})\cdot \frac{1}{\Sigma_i^n(\frac{1}{\sigma_{\mu_i}^2})}
+$$
+
+# Compute new sigma 
+> $$\sigma_\mu^2 = \frac{1}{\Sigma_i^n(\frac{1}{\sigma_{\mu_i}^2})}$$
