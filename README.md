@@ -9,7 +9,7 @@
 * Error propagation 
 * Final analysis (iffy on the method)
 ## 2: Nonlinear Dynamics and Chaos
-## 3: 
+## 3: The Zeeman Effect
 ## 4: Additional Tutorial files  
 - Pandas 
 - Gspread
